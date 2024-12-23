@@ -1,0 +1,743 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Dashboard</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://portal.ptit.edu.vn/wp-content/uploads/2016/04/favicon.png"
+    />
+
+    <link rel="stylesheet" type="text/css" href="/public/css/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+      integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+      integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdn.socket.io/3.1.3/socket.io.min.js"
+      integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@^2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@^1"></script>
+
+    <link
+      href="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.css"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.6/datatables.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header>
+      <nav
+        class="navbar navbar-expand-md navbar-light fixed-top"
+        style="background-color: #d30000"
+        id="navbar"
+      >
+        <div class="container">
+          <div class="row" style="flex-grow: 1">
+            <div class="col-3 d-flex justify-content-start">
+              <img
+                class="nav-item"
+                src="/public/image/the-server.svg"
+                alt="logo"
+                width="40"
+                height="40"
+              />
+            </div>
+            <div class="col-6 d-flex justify-content-center align-items-center">
+              <p class="h5 text-center" style="color: #ffffff">
+                HỆ THỐNG THU THẬP DỮ LIỆU THỜI TIẾT
+              </p>
+            </div>
+            <div class="col-3 d-flex justify-content-end">
+              <button
+                type="button"
+                id="member-information"
+                class="btn btn-outline-light nav-item"
+                style="height: 40; width: 40"
+              >
+                <i class="bi bi-person-circle"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container py-3">
+      <div class="row">
+        <div class="col-md-3 mx-auto my-auto">
+          <select class="form-select form-select-sm">
+            <option value="0" selected>Trạm Hà Nội</option>
+            <option value="1" disabled>Trạm Nam Định</option>
+            <option value="2" disabled>Trạm Thanh Hoá</option>
+          </select>
+        </div>
+
+        <div class="col-md-3 mx-auto my-auto">
+          <select class="form-select form-select-sm">
+            <option value="0" selected>Raspberry Pi 4 Model B</option>
+            <option value="1" disabled>Raspberry Pi 3 Model B+</option>
+            <option value="2" disabled>Raspberry Pi 3</option>
+          </select>
+        </div>
+
+        <div class="col-md-3 mx-auto my-auto"></div>
+        <div class="col-md-3 mx-auto my-auto">
+          <p class="text-end">
+            Trạng thái hoạt động:
+            <span style="color: #008000">Bình thường</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container pb-3">
+      <div class="row">
+        <div class="col-6">
+          <p class="m-0 text-center">
+            Thời gian hiện tại: <span id="date-time"></span>
+          </p>
+        </div>
+        <div class="col-6">
+          <p class="m-0 text-center">
+            Vị trí: Học viện Công nghệ Bưu chính Viễn thông
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6 col-lg-3">
+          <div class="card">
+            <div class="card-header" style="background-color: #d30000">
+              <div class="row">
+                <div class="col">
+                  <h4 class="text-center">Nhiệt độ</h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <p class="fw-bold">Giá trị cảm biến đo được</p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="mb-3">
+                    <p class="reading"><span id="temperature_input"></span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <p class="fw-bold">Giá trị thực tế</p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="mb-3">
+                    <p class="reading"><span id="temperature_api"></span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="card">
+            <div class="card-header" style="background-color: #d30000">
+              <div class="row">
+                <div class="col">
+                  <h4 class="text-center">Độ ẩm</h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <p class="fw-bold">Giá trị cảm biến đo được</p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="mb-3">
+                    <p class="reading"><span id="humidity_input"></span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <p class="fw-bold">Giá trị thực tế</p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="mb-3">
+                    <p class="reading"><span id="humidity_api"></span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="card">
+            <div class="card-header" style="background-color: #d30000">
+              <div class="row">
+                <div class="col">
+                  <h4 class="text-center">Cường độ ánh sáng</h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <p class="fw-bold">Giá trị cảm biến đo được</p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="mb-3">
+                    <p class="reading"><span id="lux_input"></span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <p class="fw-bold">Độ che phủ của mây</p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="mb-3">
+                    <p class="reading"><span id="cloud_api"></span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="card">
+            <div class="card-header" style="background-color: #d30000">
+              <div class="row">
+                <div class="col">
+                  <h4 class="text-center">Áp suất không khí</h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <p class="fw-bold">Giá trị cảm biến đo được</p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="mb-3">
+                    <p class="reading"><span id="pressure_input"></span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <p class="fw-bold">Giá trị thực tế</p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="mb-3">
+                    <p class="reading"><span id="pressure_api"></span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container py-3">
+      <div class="row pt-4">
+        <div class="col-4">
+          <div class="card">
+            <div class="card-header" style="background-color: #d30000">
+              <div class="row">
+                <div class="col">
+                  <h4 class="text-center" style="color: #fff">
+                    Điều khiển thiết bị
+                  </h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" style="height: 287.2px !important">
+              <div class="row">
+                <div class="col">
+                  <div class="row">
+                    <p class="fw-bold text-center">
+                      Thiết bị điều khiển nhiệt độ
+                    </p>
+                  </div>
+                  <div class="row pt-3">
+                    <div class="col-4">
+                      <p class="text-center">Tắt</p>
+                    </div>
+                    <div class="col-4 d-flex justify-content-center">
+                      <div class="form-check form-switch">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="switchtem"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <p class="text-center">Bật</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row pt-3">
+                <div class="col">
+                  <div class="row">
+                    <p class="fw-bold text-center">
+                      Thiết bị điều khiển ánh sáng
+                    </p>
+                  </div>
+                  <div class="row pt-3">
+                    <div class="col-4">
+                      <p class="text-center">Tắt</p>
+                    </div>
+                    <div class="col-4 d-flex justify-content-center">
+                      <div class="form-check form-switch">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="switchlux"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <p class="text-center">Bật</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row pt-3">
+                <div class="col">
+                  <div class="row">
+                    <p class="fw-bold text-center">Kích hoạt</p>
+                  </div>
+                  <div class="row pt-3">
+                    <div class="col-4">
+                      <p class="text-center">Tắt</p>
+                    </div>
+                    <div class="col-4 d-flex justify-content-center">
+                      <div class="form-check form-switch">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="switchactivated"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <p class="text-center">Bật</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-4">
+          <div class="card">
+            <div class="card-header" style="background-color: #d30000">
+              <div class="row">
+                <div class="col">
+                  <h4 class="text-center" style="color: #fff">
+                    Cài đặt thời gian
+                  </h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" style="height: 287.2px !important">
+              <div class="row">
+                <div class="col">
+                  <div class="row">
+                    <p class="fw-bold text-center">
+                      Thiết bị điều khiển nhiệt độ
+                    </p>
+                  </div>
+                  <div class="row">
+                    <div class="input-group mb-3">
+                      <input
+                        id="hour1"
+                        type="number"
+                        class="form-control"
+                        placeholder="Giờ"
+                        min="0"
+                        max="23"
+                      />
+                      <span class="input-group-text">:</span>
+                      <input
+                        id="minute1"
+                        type="number"
+                        class="form-control"
+                        placeholder="Phút"
+                        min="0"
+                        max="59"
+                      />
+                      <span class="input-group-text"></span>
+                      <input
+                        id="thoigian1"
+                        type="number"
+                        class="form-control"
+                        placeholder="Thời gian"
+                        min="0"
+                        max="59"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="row">
+                    <p class="fw-bold text-center">
+                      Thiết bị điều khiển ánh sáng
+                    </p>
+                  </div>
+                  <div class="row">
+                    <div class="input-group mb-3">
+                      <input
+                        id="hour2"
+                        type="number"
+                        class="form-control"
+                        placeholder="Giờ"
+                        min="0"
+                        max="23"
+                      />
+                      <span class="input-group-text">:</span>
+                      <input
+                        id="minute2"
+                        type="number"
+                        class="form-control"
+                        placeholder="Phút"
+                        min="0"
+                        max="59"
+                      />
+                      <span class="input-group-text"></span>
+                      <input
+                        id="thoigian2"
+                        type="number"
+                        class="form-control"
+                        placeholder="Thời gian"
+                        min="0"
+                        max="59"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row pt-2">
+                <div class="col">
+                  <div class="row">
+                    <p class="fw-bold text-center">Kích hoạt</p>
+                  </div>
+                  <div class="row pt-3">
+                    <div class="col-4">
+                      <p class="text-center">Tắt</p>
+                    </div>
+                    <div class="col-4 d-flex justify-content-center">
+                      <div class="form-check form-switch">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="timeactivated"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <p class="text-center">Bật</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-4">
+          <div class="card">
+            <div class="card-header" style="background-color: #d30000">
+              <div class="row">
+                <div class="col">
+                  <h4 class="text-center" style="color: #fff">
+                    Cài đặt ngưỡng
+                  </h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" style="height: 287.2px !important">
+              <div class="row">
+                <div class="col">
+                  <div class="row">
+                    <p class="fw-bold text-center">
+                      Thiết bị điều khiển nhiệt độ
+                    </p>
+                  </div>
+                  <div class="row">
+                    <div class="input-group mb-3">
+                      <input
+                        id="nguongtem"
+                        type="number"
+                        class="form-control"
+                        placeholder="Ngưỡng nhiệt độ"
+                        min="0"
+                        max="100"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <p class="fw-bold text-center">
+                      Thiết bị điều khiển ánh sáng
+                    </p>
+                  </div>
+                  <div class="row">
+                    <div class="input-group mb-3">
+                      <input
+                        id="nguonglux"
+                        type="number"
+                        class="form-control"
+                        placeholder="Ngưỡng cường độ ánh sáng"
+                        min="0"
+                        max="20000"
+                      />
+                    </div>
+                  </div>
+                  <div class="row pt-2">
+                    <div class="col">
+                      <div class="row">
+                        <p class="fw-bold text-center">Kích hoạt</p>
+                      </div>
+                      <div class="row pt-3">
+                        <div class="col-4">
+                          <p class="text-center">Tắt</p>
+                        </div>
+                        <div class="col-4 d-flex justify-content-center">
+                          <div class="form-check form-switch">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              id="nguongactivated"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <p class="text-center">Bật</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container py-3">
+      <div class="row">
+        <div class="col-sm-6 col-lg-6">
+          <div class="card">
+            <div class="card-header" style="background-color: #d30000">
+              <div class="row">
+                <div class="col">
+                  <h4 class="text-center">Biểu đồ nhiệt độ</h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <canvas
+                  class="border rounded"
+                  id="temperature-chart"
+                  style="
+                    max-height: 500px;
+                    width: 100%;
+                    background-color: white;
+                  "
+                ></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-6">
+          <div class="card">
+            <div class="card-header" style="background-color: #d30000">
+              <div class="row">
+                <div class="col">
+                  <h4 class="text-center">Biểu đồ độ ẩm</h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <canvas
+                  class="border rounded"
+                  id="humidity-chart"
+                  style="
+                    max-height: 500px;
+                    width: 100%;
+                    background-color: white;
+                  "
+                ></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container py-3">
+      <div class="row">
+        <div class="col-sm-6 col-lg-6">
+          <div class="card">
+            <div class="card-header" style="background-color: #d30000">
+              <div class="row">
+                <div class="col">
+                  <h4 class="text-center">Biểu đồ cường độ ánh sáng</h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <canvas
+                  class="border rounded"
+                  id="lux-chart"
+                  style="
+                    max-height: 500px;
+                    width: 100%;
+                    background-color: white;
+                  "
+                ></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-6">
+          <div class="card">
+            <div class="card-header" style="background-color: #d30000">
+              <div class="row">
+                <div class="col">
+                  <h4 class="text-center">Biểu đồ áp suất không khí</h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <canvas
+                  class="border rounded"
+                  id="pressure-chart"
+                  style="
+                    max-height: 500px;
+                    width: 100%;
+                    background-color: white;
+                  "
+                ></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section>
+      <footer class="text-white text-center">
+        <div class="text-center p-3 fw-bold" style="background-color: #d30000">
+          Hà Nội - 2024
+        </div>
+      </footer>
+    </section>
+
+    <script>
+      document
+        .getElementById("member-information")
+        .addEventListener("click", function () {
+          var inforModal = new bootstrap.Modal(
+            document.getElementById("information-modal"),
+            {
+              backdrop: true,
+            }
+          );
+          inforModal.show();
+        });
+    </script>
+
+    <script src="/public/js/javascript.js"></script>
+  </body>
+</html>
